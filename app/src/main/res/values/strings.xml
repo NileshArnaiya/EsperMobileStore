@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">EsperMobileStore</string>
+    <string name="Combination">Combination</string>
+    <string name="selected_combination">Selected Combination is available, Click Submit to Proceed</string>
+    <string name="submit_btn">Submit</string>
+    <string name="select_another_combo">Please Select another combo</string>
+    <string name="selected_not_available">Selected Combo is not Available</string>
+    <string name="something_went_wrong">Something went wrong!!</string>
+    <string name="unable_to_Fetch">Unable to fetch data</string>
+    <string name="select_one_mobile">Please Select atleast one Mobile</string>
 </resources>
