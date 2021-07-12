@@ -40,7 +40,7 @@ public class FeaturesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.arrList = userViewModels;
         this.cnt = context;
         selectedItems = new SparseBooleanArray();
-        multiValueMap = new HashMap<String, String>();
+        multiValueMap = new HashMap<>();
     }
 
     public void setItemClick(OnItemClick itemClick) {
@@ -80,7 +80,6 @@ public class FeaturesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 mobileVH.mobileBinding.optionId.setText("Option ID: " + arrList.get(0).getFeatures().get(MobileList).getOptions().get(position).getId());
                 Picasso.get().load(arrList.get(0).getFeatures().get(MobileList).getOptions().get(position).getIcon()).into(mobileVH.mobileBinding.mobilephone);
 
-                //Changes the activated state of this view.
                 mobileVH.mobileBinding.mobilecardview.setActivated(selectedItems.get(position, false));
                 mobileVH.mobileBinding.mobilecardview.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -195,7 +194,7 @@ public class FeaturesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         if (position < Mobilelistsize) {
             return MobileList;
-        } else if (position >= Mobilelistsize && position < (Mobilelistsize + storagelistsize)) {
+        } else if (position < Mobilelistsize + storagelistsize) {
             return StorageList;
         } else
             return OtherFeaturesList;
@@ -203,14 +202,12 @@ public class FeaturesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public int getItemCount() {
-        int size = arrList.get(0).getFeatures().get(MobileList).getOptions().size() + arrList.get(0).getFeatures().get(StorageList).getOptions().size()
+        return arrList.get(0).getFeatures().get(MobileList).getOptions().size() + arrList.get(0).getFeatures().get(StorageList).getOptions().size()
                 + arrList.get(0).getFeatures().get(OtherFeaturesList).getOptions().size();
-        return size;
     }
 
-    /*
-   This method will trigger when we we long press the item and it will change the icon of the item to check icon.
- */
+    // when we we press the item and it will change the icon
+
     private void toggleIcon(FeaturesRowLayoutBinding bi, int position) {
         if (selectedItems.get(position, false)) {
             if (selectedIndex == position) {
@@ -272,7 +269,7 @@ public class FeaturesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public void clearSelection() {
         selectedItems.clear();
-        multiValueMap = new HashMap<String, String>();
+        multiValueMap = new HashMap<>();
         notifyDataSetChanged();
     }
 
@@ -289,7 +286,7 @@ public class FeaturesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         void onLongPress(View view, Options features, String feature_id, int position);
     }
 
-    public class MobileVH extends RecyclerView.ViewHolder {
+    public static class MobileVH extends RecyclerView.ViewHolder {
         FeaturesRowLayoutBinding mobileBinding;
 
         public MobileVH(@NonNull FeaturesRowLayoutBinding itemView) {
@@ -298,12 +295,7 @@ public class FeaturesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-
-        /*
-       for clearing our selection
-     */
-
-    public class StorageVH extends RecyclerView.ViewHolder {
+    public static class StorageVH extends RecyclerView.ViewHolder {
         StorageRowLayoutBinding storageBinding;
 
         public StorageVH(@NonNull StorageRowLayoutBinding itemView) {
@@ -312,7 +304,7 @@ public class FeaturesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    public class OtherFeaturesVH extends RecyclerView.ViewHolder {
+    public static class OtherFeaturesVH extends RecyclerView.ViewHolder {
         OtherFeaturesRowBinding otherFeaturesRowBinding;
 
         public OtherFeaturesVH(@NonNull OtherFeaturesRowBinding itemView) {

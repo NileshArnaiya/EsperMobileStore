@@ -1,6 +1,5 @@
 package com.example.espermobilestore.activity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -75,9 +74,9 @@ public class MainActivity extends AppCompatActivity {
                         featuresAdapter.setItemClick(new FeaturesAdapter.OnItemClick() {
                             @Override
                             public void onItemClick(View view, Options features, String feature_id, int position) {
-                                if (featuresAdapter.selectedItemCount() > 0) {
-                                    toggleActionBar(feature_id, features, position);
-                                }
+
+                                toggleActionBar(feature_id, features, position);
+
                             }
 
                             @Override
@@ -98,7 +97,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
-        // else load cached data
         else {
             loadData();
         }
@@ -157,20 +155,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void openDialog(Boolean invalid, final Map<String, String> maplist) {
-        if (invalid == true) {
+        if (invalid) {
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(
                     MainActivity.this);
             alertDialog.setTitle(R.string.Combination);
             alertDialog.setMessage(R.string.selected_not_available);
             alertDialog.setPositiveButton("Ok",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(getApplicationContext(),
-                                    getResources().getString(R.string.select_another_combo), Toast.LENGTH_SHORT)
-                                    .show();
-                            Invalid = false;
-                            dialog.cancel();
-                        }
+                    (dialog, which) -> {
+                        Toast.makeText(getApplicationContext(),
+                                getResources().getString(R.string.select_another_combo), Toast.LENGTH_SHORT)
+                                .show();
+                        Invalid = false;
+                        dialog.cancel();
                     });
             alertDialog.show();
         } else {
@@ -179,29 +175,18 @@ public class MainActivity extends AppCompatActivity {
             alertDialog.setTitle(R.string.Combination);
             alertDialog.setMessage(R.string.selected_combination);
             alertDialog.setPositiveButton(R.string.submit_btn,
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            // Write your code here to execute after dialog
-                            Intent resultsIntent = new Intent(MainActivity.this, SelectedCombination.class);
-                            Results obj = Results.getInstance();
-                            obj.resultsList = new HashMap<>();
-                            obj.featuresList = new ArrayList<>();
-                            obj.featuresList = featureResponses;
-                            obj.resultsList = maplist;
-                            startActivity(resultsIntent);
-                            dialog.cancel();
-                        }
+                    (dialog, which) -> {
+                        Intent resultsIntent = new Intent(MainActivity.this, SelectedCombination.class);
+                        Results obj = Results.getInstance();
+                        obj.resultsList = new HashMap<>();
+                        obj.featuresList = new ArrayList<>();
+                        obj.featuresList = featureResponses;
+                        obj.resultsList = maplist;
+                        startActivity(resultsIntent);
+                        dialog.cancel();
                     });
-            alertDialog.setNegativeButton("NO",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            // Write your code here to execute after dialog
-                            Toast.makeText(getApplicationContext(),
-                                    "", Toast.LENGTH_SHORT)
-                                    .show();
-                            dialog.cancel();
-                        }
-                    });
+            alertDialog.setNegativeButton("Cancel",
+                    (dialog, which) -> dialog.cancel());
             alertDialog.show();
         }
     }
@@ -222,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.applyItem:
+                case R.id.selectItem:
                     openDialog(Invalid, maplist);
                     mode.finish();
                     return true;
